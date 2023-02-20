@@ -1,30 +1,30 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
   <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+    <h1>List of Pokemon</h1>
+    <ul>
+      <li v-for="pokemon in pokemons" :key="pokemon.name">
+        {{ pokemon.name }}
+      </li>
+    </ul>
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>
+<script>
+  const api = "https://pokeapi.co/api/v2/pokemon"
+export default {
+  data() {
+    return {
+      pokemons: []
+    };
+  },
+  mounted() {
+    // Make an API request to get the data
+    fetch(api + "?offset=10&limit=1300")
+      .then(response => response.json())
+      .then(data => {
+        this.pokemons = data.results;
+      })
+      .catch(error => console.error(error));
+  }
+};
+</script>
