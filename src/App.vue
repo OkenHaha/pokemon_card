@@ -24,13 +24,25 @@ export default {
       pokemons: []
     };
   },
+  methods:{
+    geturl(pokes) {
+      let urls = []
+      for(let i = 0; i<pokes.length;i++){
+        urls = pokes[i].url.slice(-2,-1)
+        console.log(urls)
+      }
+    },
+    createImage(pokeId) {
+      const link = "https://unpkg.com/pokeapi-sprites@2.0.2/sprites/pokemon/other/dream-world/"
+    }
+  },
   mounted() {
-    axios.get(api + "?limit=2000&offset=0")
-    .then(res => {
+    axios.get(api + "?limit=5&offset=0")
+    .then((res) => {
       this.pokemons = res.data.results
-      console.log(this.pokemons[0].name)
-    })
-    
+      console.log(this.pokemons)
+      this.geturl(this.pokemons)
+    }) 
   }
 };
 </script>
