@@ -1,57 +1,45 @@
 <template>
-  <div>
-    <h1>List of Pokemon</h1>
-    <ol>
-      <li v-for="pokemon in pokemons" :key="pokemon.name">
-        {{ pokemon.name }}
-        <ul>
-          <li> {{pokemon.url}} </li>
-        </ul>
-        <br/>
-      </li>
-    </ol>
-  </div>
+  
 </template>
 
 <script>
 import axios from 'axios'
 
-const api = "https://pokeapi.co/api/v2/pokemon"
-const api1 = api + "/1"
-export default {
-  data() {
+const api = "https://pokeapi.co/api/v2/pokemon?limit=151"
+
+export default{
+  data(){
     return {
-      pokemons: []
-    };
-  },
-  methods:{
-    geturl(pokes) {
-      let urls = []
-      for(let i = 0; i<pokes.length;i++){
-        urls = pokes[i].url.slice(-2,-1)
-        console.log(urls)
-      }
-    },
-    createImage(pokeId) {
-      const link = "https://unpkg.com/pokeapi-sprites@2.0.2/sprites/pokemon/other/dream-world/"
+      pokemons: [],
+      urls: [],
     }
   },
-  mounted() {
-    axios.get(api + "?limit=5&offset=0")
-    .then((res) => {
-      this.pokemons = res.data.results
-      console.log(this.pokemons)
-      this.geturl(this.pokemons)
-    }) 
+  methods: {
+    fetchPoke(){
+      axios.get(api)
+      .then((allPoke) =>{
+        allPoke.results.forEach((allPoke) =>{
+          PokeData(pokemon)
+        })
+      })
+    },
+    PokeData(pokemon){
+      let url = pokemon.url
+
+      axios.get(url)
+      .then((pokeData) => {
+        renderPoke(pokeData)
+      })
+    },
+    renderPoke(pokeData){
+      pokeName = pokeData.name
+      pokeId = pokeData.id
+      pokeImage(pokeId)
+    },
+    pokeImage(pokeId) {
+      pokeSrc = `https://unpkg.com/pokeapi-sprites@2.0.2/sprites/pokemon/other/dream-world/${pokeID}.svg`
+    }
   }
-};
+}
+
 </script>
-
-
-
-<!-- axios.get(api)
-    .then(res)
-    .then(data => {
-      this.pokemons = data.results
-    })
-    .catch(err => console.error(err) -->)
